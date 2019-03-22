@@ -19,7 +19,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="CicekSepeti" options="-parameters" />
+      <module name="CicekSepeti" options="" />
       <module name="CrpytoNotifier" options="-parameters" />
       <module name="CryptoNotifier" options="-parameters" />
     </option>

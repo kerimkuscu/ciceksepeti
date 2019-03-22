@@ -12,14 +12,10 @@ public class BaseSchedular implements ServletContextListener {
     protected static final int DAYINMILLISECONDS    = 86400000;
 
     protected BaseRepository baseRepository;
-    protected int tradeListControlRange;
-    protected int requestControlRange;
 
     public BaseSchedular(){
 
         baseRepository = new BaseRepository();
-        requestControlRange = Integer.parseInt(baseRepository.getProperty("RequestControlRange"));
-        tradeListControlRange = Integer.parseInt(baseRepository.getProperty("TradeListControlRange"));
 
     }
 

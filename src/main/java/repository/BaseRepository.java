@@ -57,43 +57,4 @@ public class BaseRepository {
         }
     }
 
-
-    public String getProperty(String pKey){
-        String pValue = new String();
-        Statement stmt = this.createStatement();
-
-        try {
-
-            ResultSet rs = stmt.executeQuery("select PVALUE from SystemProperties where PKEY = '" + pKey + "'");
-            if(rs.next()){
-                pValue = rs.getString(1);
-            }
-
-        }catch (SQLException e){
-            e.printStackTrace();
-        }finally {
-            this.cleanResources(stmt);
-        }
-
-        return pValue;
-    }
-
-    public String getNow(){
-        String dateTime = new String();
-        Statement statement = this.createStatement();
-
-        try {
-            ResultSet rs = statement.executeQuery("select NOW()");
-            if(rs.next()){
-                dateTime = rs.getString(1);
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }finally {
-            this.cleanResources(statement);
-        }
-
-        return dateTime;
-    }
-
 }

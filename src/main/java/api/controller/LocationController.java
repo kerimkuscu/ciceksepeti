@@ -28,7 +28,7 @@ public class LocationController {
     public Response getNewContactReportPersonalList(@Context HttpServletRequest request, MultivaluedMap<String, String> form) {
         JSONObject data = LocationProvider.saveLocation(request, form);
 
-        return Response.status(data.getInt("status")).build();
+        return Response.status(data.getInt("status")).entity(data.toString()).build();
     }
 
 

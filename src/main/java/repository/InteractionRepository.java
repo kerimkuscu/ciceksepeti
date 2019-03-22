@@ -36,9 +36,9 @@ public class InteractionRepository extends BaseRepository {
         Statement statement = null;
         try {
             statement = this.createStatement();
-
+            ;
             ResultSet rs = statement.executeQuery("select x,y,TIMESTAMP,MARKETID from Location " +
-                    "where USERID = " + userId + " TIMESTAMP between DATE_SUB(NOW(), INTERVAL " + seconds + " second) and NOW() order by TIMESTAMP asc");
+                    "where USERID = " + userId + " and TIMESTAMP between DATE_SUB(NOW(), INTERVAL " + seconds + " second) and NOW() order by TIMESTAMP asc");
             while (rs.next()){
                 Location location = new Location();
 
@@ -64,7 +64,7 @@ public class InteractionRepository extends BaseRepository {
         Statement statement = null;
 
         try {
-            this.createStatement();
+            statement = this.createStatement();
 
             ResultSet rs = statement.executeQuery("select PRODUCTID from Market_Products " +
                     "where MARKETID = " + marketId + " and (SQRT((ABS(x-" + x + ") * ABS(x-" + x + ")) + (ABS(y-" + y + ") * ABS(y-" + y + ")))) < " + CLOSENESS);
@@ -86,7 +86,7 @@ public class InteractionRepository extends BaseRepository {
 
         try {
 
-            this.createStatement();
+            statement = this.createStatement();
 
             statement.executeUpdate("insert into Interactions (USERID, PRODUCTID) values(" + userId + ", " + productId + ")");
 

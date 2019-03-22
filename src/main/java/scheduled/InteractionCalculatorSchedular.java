@@ -11,7 +11,7 @@ import java.util.TimerTask;
 
 public class InteractionCalculatorSchedular extends BaseSchedular {
 
-    private static final Integer CONTROL_RANGE_IN_SECONDS = 30;
+    private static final Integer CONTROL_RANGE_IN_SECONDS = 300;
     private static final Integer INTERACTION_BORDER = 3;
 
     private LocationRepository locationRepository;
@@ -29,6 +29,7 @@ public class InteractionCalculatorSchedular extends BaseSchedular {
     public void initialize(){
         try{
 
+            System.out.println("Scheduling Interaction catcher ...");
             Timer tradeListChecker = new Timer();
             tradeListChecker.schedule(new CatchInteractions(), 0, (CONTROL_RANGE_IN_SECONDS * 1000));
 
@@ -37,10 +38,12 @@ public class InteractionCalculatorSchedular extends BaseSchedular {
         }
     }
 
-    public void startListening(){
+    public void startCatchingInteractions(){
 
+        System.out.println("Catching interactions ...");
         ArrayList<Integer> userList = interactionRepository.getActiveUsers(CONTROL_RANGE_IN_SECONDS);
 
+        long start = System.currentTimeMillis();
         for(Integer userId : userList){
 
             ArrayList<Location> locations = interactionRepository.getLocations(CONTROL_RANGE_IN_SECONDS, userId);
@@ -55,6 +58,7 @@ public class InteractionCalculatorSchedular extends BaseSchedular {
                     if(closestPoints.containsKey(productId)){
 
                         if((closestPoints.get(productId) + 1) >= INTERACTION_BORDER){
+                            System.out.println("Creating interaction: " + userId + " - " + productId);
                             interactionRepository.createInteraction(userId,productId);
                             closestPoints.remove(productId);
                             continue;
@@ -73,12 +77,14 @@ public class InteractionCalculatorSchedular extends BaseSchedular {
 
         }
 
+        System.out.println("Total time to catch interactions: " + (System.currentTimeMillis() - start));
+
     }
 
     public class CatchInteractions extends TimerTask {
         @Override
         public void run() {
-            startListening();
+            startCatchingInteractions();
         }
     }
 

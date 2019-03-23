@@ -139,15 +139,27 @@ public class InteractionRepository extends BaseRepository {
 
         try {
             statement = this.createStatement();
-            ResultSet resultSet= statement.executeQuery("(SELECT *\n" +
-                    "FROM Product\n" +
-                    "WHERE CATEGORYID IN (SELECT CATEGORYID FROM Product WHERE ID IN (SELECT PRODUCTID FROM Interactions WHERE USERID = 1))\n" +
-                    "  AND ID NOT IN (SELECT PRODUCTID FROM Interactions WHERE USERID ="+userId +") LIMIT 5)\n" +
-                    "\n" +
-                    "UNION\n" +
-                    "    (SELECT *\n" +
-                    "FROM Product\n" +
-                    "WHERE CATEGORYID IN (SELECT CATEGORYID FROM Product WHERE ID IN (SELECT PRODUCTID FROM Interactions WHERE USERID =" +userId+")) LIMIT 5)\n");
+            String sql = String.format("(SELECT DISTINCT p1.* FROM Interactions a1, Interactions a2, User u1, SOLD s1, Product p1 " +
+                    "WHERE a1.USERID=%d " +
+                    "AND a1.PRODUCTID=a2.PRODUCTID " +
+                    "AND a2.USERID= u1.ID " +
+                    "AND u1.ID<>%d " +
+                    "AND s1.USERID= u1.ID " +
+                    "AND p1.ID=s1.PRODUCTID " +
+                    "AND p1.CATEGORYID IN (SELECT p2.CATEGORYID FROM Product p2, Interactions a3 WHERE a3.USERID=%d AND p2.ID= a3.PRODUCTID) LIMIT 5) " +
+                    " " +
+                    "UNION " +
+                    " " +
+                    "(SELECT * FROM Product " +
+                    "WHERE CATEGORYID IN (SELECT CATEGORYID FROM Product WHERE ID IN (SELECT PRODUCTID FROM Interactions WHERE USERID = %d)) " +
+                    "  AND ID NOT IN (SELECT PRODUCTID FROM Interactions WHERE USERID =%d) LIMIT 5) " +
+                    " " +
+                    "UNION " +
+                    "    (SELECT * " +
+                    "FROM Product " +
+                    "WHERE CATEGORYID IN (SELECT CATEGORYID FROM Product WHERE ID IN (SELECT PRODUCTID FROM Interactions WHERE USERID =%d)) LIMIT 5) "+
+                    "UNION (SELECT * FROM Product LIMIT 5)" ,userId,userId,userId,userId,userId,userId);
+            ResultSet resultSet= statement.executeQuery(sql);
 
             while (resultSet.next())
             {

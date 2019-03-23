@@ -132,15 +132,26 @@ public class InteractionRepository extends BaseRepository {
 
         try {
             statement = this.createStatement();
-            ResultSet resultSet= statement.executeQuery("(SELECT *\n" +
-                    "FROM Product\n" +
-                    "WHERE CATEGORYID IN (SELECT CATEGORYID FROM Product WHERE ID IN (SELECT PRODUCTID FROM Interactions WHERE USERID = 1))\n" +
-                    "  AND ID NOT IN (SELECT PRODUCTID FROM Interactions WHERE USERID ="+userId +") LIMIT 5)\n" +
+            String sql = String.format("(SELECT DISTINCT p1.* FROM Interactions a1, Interactions a2, User u1, SOLD s1, Product p1\n" +
+                    "WHERE a1.USERID={0}\n" +
+                    "AND a1.PRODUCTID=a2.PRODUCTID\n" +
+                    "AND a2.USERID= u1.ID\n" +
+                    "AND u1.ID<>{0}\n" +
+                    "AND s1.USERID= u1.ID\n" +
+                    "AND p1.ID=s1.PRODUCTID\n" +
+                    "AND p1.CATEGORYID IN (SELECT p2.CATEGORYID FROM Product p2, Interactions a3 WHERE a3.USERID={0} AND p2.ID= a3.PRODUCTID) LIMIT 5)\n" +
+                    "\n" +
+                    "UNION\n" +
+                    "\n" +
+                    "(SELECT * FROM Product\n" +
+                    "WHERE CATEGORYID IN (SELECT CATEGORYID FROM Product WHERE ID IN (SELECT PRODUCTID FROM Interactions WHERE USERID = {0}))\n" +
+                    "  AND ID NOT IN (SELECT PRODUCTID FROM Interactions WHERE USERID ={0}) LIMIT 5)\n" +
                     "\n" +
                     "UNION\n" +
                     "    (SELECT *\n" +
                     "FROM Product\n" +
-                    "WHERE CATEGORYID IN (SELECT CATEGORYID FROM Product WHERE ID IN (SELECT PRODUCTID FROM Interactions WHERE USERID =" +userId+")) LIMIT 5)\n");
+                    "WHERE CATEGORYID IN (SELECT CATEGORYID FROM Product WHERE ID IN (SELECT PRODUCTID FROM Interactions WHERE USERID ={0})) LIMIT 5)",userId);
+            ResultSet resultSet= statement.executeQuery(sql);
 
             while (resultSet.next())
             {

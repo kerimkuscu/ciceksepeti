@@ -59,7 +59,7 @@ public class InteractionCalculatorSchedular extends BaseSchedular {
                     if(closestPoints.containsKey(productId)){
                         if((closestPoints.get(productId) + 1) >= INTERACTION_BORDER){
                             System.out.println("Creating interaction: " + userId + " - " + productId);
-                            interactionRepository.createInteraction(userId,productId);
+                            interactionRepository.createInteraction(userId,productId,location.getTimeStamp());
                             closestPoints.remove(productId);
                             continue;
                         }else {

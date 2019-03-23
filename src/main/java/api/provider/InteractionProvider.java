@@ -2,6 +2,7 @@ package api.provider;
 
 import com.google.gson.Gson;
 import dto.Interaction;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import repository.InteractionRepository;
 import repository.LocationRepository;
@@ -12,14 +13,13 @@ import java.util.List;
 
 public class InteractionProvider {
 
-    public static JSONObject getInteractions(HttpServletRequest request, MultivaluedMap<String, String> form){
+    public static JSONObject getInteractions(HttpServletRequest request, int userId){
 
         InteractionRepository repository = new InteractionRepository();
-        List<Interaction> interactionList= repository.getInteractions(Integer.parseInt(form.get("userId").get(0)));
+        JSONArray interactionList= repository.getInteractions(userId);
 
-        Gson g= new Gson();
-        String jsonString = g.toJson(interactionList);
-        return new JSONObject("{interactions: "+jsonString+"}").put("status", 200);
+
+        return new JSONObject(){{put("status", 200); put("data", interactionList);}};
 
     }
 

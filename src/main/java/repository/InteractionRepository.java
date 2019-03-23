@@ -3,6 +3,8 @@ package repository;
 import bean.Location;
 import dto.Interaction;
 import dto.Product;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -87,14 +89,14 @@ public class InteractionRepository extends BaseRepository {
         return closestProductIdList;
     }
 
-    public void createInteraction(int userId, int productId){
+    public void createInteraction(int userId, int productId, String timeStamp){
         Statement statement = null;
 
         try {
 
             statement = this.createStatement();
 
-            statement.executeUpdate("insert into Interactions (USERID, PRODUCTID) values(" + userId + ", " + productId + ")");
+            statement.executeUpdate("insert into Interactions (USERID, PRODUCTID, TIMESTAMP) values(" + userId + ", " + productId + ", '" + timeStamp + "')");
 
         }catch (SQLException e){
             e.printStackTrace();
@@ -103,17 +105,22 @@ public class InteractionRepository extends BaseRepository {
         }
     }
 
-    public List<Interaction> getInteractions(int userId){
+    public JSONArray getInteractions(int userId){
         Statement statement = null;
-        List<Interaction> interactionList= new ArrayList<>();
+        JSONArray interactionList= new JSONArray();
 
         try {
             statement = this.createStatement();
-            ResultSet resultSet= statement.executeQuery("SELECT * FROM Interactions WHERE USERID="+userId);
+            ResultSet resultSet= statement.executeQuery("select NAME, TIMESTAMP from Interactions inner join Product on Interactions.PRODUCTID = Product.ID " +
+                    " WHERE USERID="+userId);
 
-            while (resultSet.next())
-            {
-                interactionList.add(new Interaction(resultSet.getInt(1),resultSet.getInt(2),resultSet.getInt(3)));
+            while (resultSet.next()) {
+                JSONObject object = new JSONObject();
+
+                object.put("name", resultSet.getString(1));
+                object.put("timeStamp", resultSet.getString(2));
+
+                interactionList.put(object);
             }
         }catch (SQLException e){
             e.printStackTrace();

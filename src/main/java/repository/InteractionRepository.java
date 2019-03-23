@@ -2,6 +2,7 @@ package repository;
 
 import bean.Location;
 import dto.Interaction;
+import dto.Product;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -122,4 +123,38 @@ public class InteractionRepository extends BaseRepository {
         return interactionList;
     }
 
+
+    public List<Product> getRecommendeds(int userId){
+        Statement statement = null;
+        List<Product> productList= new ArrayList<>();
+
+        CategoryRepository categoryRepository = new CategoryRepository();
+
+        try {
+            statement = this.createStatement();
+            ResultSet resultSet= statement.executeQuery("(SELECT *\n" +
+                    "FROM Product\n" +
+                    "WHERE CATEGORYID IN (SELECT CATEGORYID FROM Product WHERE ID IN (SELECT PRODUCTID FROM Interactions WHERE USERID = 1))\n" +
+                    "  AND ID NOT IN (SELECT PRODUCTID FROM Interactions WHERE USERID ="+userId +") LIMIT 5)\n" +
+                    "\n" +
+                    "UNION\n" +
+                    "    (SELECT *\n" +
+                    "FROM Product\n" +
+                    "WHERE CATEGORYID IN (SELECT CATEGORYID FROM Product WHERE ID IN (SELECT PRODUCTID FROM Interactions WHERE USERID =" +userId+")) LIMIT 5)\n");
+
+            while (resultSet.next())
+            {
+                productList.add(new Product(resultSet.getInt(1),
+                        resultSet.getString(2),
+                        categoryRepository.getCategoryById(resultSet.getInt(3)),
+                        resultSet.getDouble(4),
+                        resultSet.getString(5)));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            cleanResources(statement);
+        }
+        return productList;
+    }
 }

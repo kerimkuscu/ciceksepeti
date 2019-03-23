@@ -18,13 +18,12 @@ public class RecommendationProvider {
     public JSONObject getRecommendations(HttpServletRequest request, MultivaluedMap<String, String> form){
 
         InteractionRepository repository = new InteractionRepository();
-        //TODO: interactions olarak değil ilerde düzelecek..
-        List<Interaction> interactionList= repository.getInteractions(Integer.parseInt(form.get("userId").get(0)));
 
-        List<Product> productList = interactionToProduct(interactionList);
+        //TODO: interactions olarak değil ilerde düzelecek..
+        List<Product> interactionList= repository.getRecommendeds(Integer.parseInt(form.get("userId").get(0)));
 
         Gson g= new Gson();
-        String jsonString = g.toJson(productList);
+        String jsonString = g.toJson(interactionList);
         return new JSONObject("{recommendations:"+jsonString+"}").put("status", 200);
 
     }

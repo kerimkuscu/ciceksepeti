@@ -21,12 +21,13 @@ public class LocationController {
      * @param form    form data for report filters
      * @return JSON Result
      */
-    @POST
+    @GET
     @Path("/location")
     @Consumes(APPLICATION_FORM_URLENCODED)
     @Produces("application/json;charset=utf-8")
-    public Response getNewContactReportPersonalList(@Context HttpServletRequest request, MultivaluedMap<String, String> form) {
-        JSONObject data = LocationProvider.saveLocation(request, form);
+    public Response getNewContactReportPersonalList(@Context HttpServletRequest request, @QueryParam("x") int x, @QueryParam("y") int y, @QueryParam("marketId") int marketId,
+                                                    @QueryParam("userId") int userId) {
+        JSONObject data = LocationProvider.saveLocation(request, x, y, marketId, userId);
 
         return Response.status(data.getInt("status")).entity(data.toString()).build();
     }

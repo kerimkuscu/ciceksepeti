@@ -11,6 +11,11 @@
         </listener-class>
     </listener>
 -->
+    <listener>
+        <listener-class>
+            scheduled.StockTracerSchedular
+        </listener-class>
+    </listener>
 
     <filter>
         <filter-name>CorsFilter</filter-name>

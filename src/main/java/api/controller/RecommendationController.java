@@ -18,16 +18,14 @@ public class RecommendationController {
      * Contact report personal scope report controller.
      *
      * @param request HttpServletRequest
-     * @param form    form data for report filters
      * @return JSON Result
      */
     @GET
     @Path("/")
-    @Consumes(APPLICATION_FORM_URLENCODED)
     @Produces("application/json;charset=utf-8")
-    public Response getNewContactReportPersonalList(@Context HttpServletRequest request, MultivaluedMap<String, String> form) {
+    public Response getNewContactReportPersonalList(@Context HttpServletRequest request, @QueryParam("userId") int userId) {
         RecommendationProvider recommendationProvider= new RecommendationProvider();
-        JSONObject data = recommendationProvider.getRecommendations(request, form);
+        JSONObject data = recommendationProvider.getRecommendations(request, userId);
         return Response.status(data.getInt("status")).entity(data.toString()).build();
     }
 

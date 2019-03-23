@@ -10,7 +10,7 @@ public class Product {
     private Category category;
     private String url;
 
-    public Product(int id, String name, double price, Category category, String url) {
+    public Product(int id, String name, Category category, double price, String url) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -60,6 +60,6 @@ public class Product {
 
     public  static  Product getDummyProduct()
     {
-        return new Product(0,"Dummy Product", 0.0, Category.getDummyCategory(),"");
+        return new Product(0,"Dummy Product", Category.getDummyCategory(), 0.0,"");
     }
 }

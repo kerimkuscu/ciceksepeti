@@ -27,7 +27,7 @@ public class InteractionController {
     @Produces("application/json;charset=utf-8")
     public Response getNewContactReportPersonalList(@Context HttpServletRequest request, MultivaluedMap<String, String> form) {
         JSONObject data = InteractionProvider.getInteractions(request, form);
-        return Response.status(data.getInt("status")).build();
+        return Response.status(data.getInt("status")).entity(data.toString()).build();
     }
 
 

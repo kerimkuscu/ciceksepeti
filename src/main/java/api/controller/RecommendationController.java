@@ -28,7 +28,7 @@ public class RecommendationController {
     public Response getNewContactReportPersonalList(@Context HttpServletRequest request, MultivaluedMap<String, String> form) {
         RecommendationProvider recommendationProvider= new RecommendationProvider();
         JSONObject data = recommendationProvider.getRecommendations(request, form);
-        return Response.status(data.getInt("status")).build();
+        return Response.status(data.getInt("status")).entity(data.toString()).build();
     }
 
 

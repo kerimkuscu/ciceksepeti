@@ -17,6 +17,7 @@ public class RecommendationProvider {
 
     public JSONObject getRecommendations(HttpServletRequest request, MultivaluedMap<String, String> form){
 
+        System.out.println("Form:" + form.toString());
         InteractionRepository repository = new InteractionRepository();
         //TODO: interactions olarak değil ilerde düzelecek..
         List<Interaction> interactionList= repository.getInteractions(Integer.parseInt(form.get("userId").get(0)));

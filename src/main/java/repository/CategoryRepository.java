@@ -17,9 +17,11 @@ public class CategoryRepository extends BaseRepository {
         Category retData = Category.getDummyCategory();
         try {
             statement = this.createStatement();
-            ResultSet resultSet= statement.executeQuery("SELECT * FROM Interactions WHERE ID="+id);
+            ResultSet resultSet= statement.executeQuery("SELECT * FROM Category WHERE ID="+id);
 
-            retData=new Category(resultSet.getInt(1), resultSet.getString(2));
+            if(resultSet.next()){
+                retData=new Category(resultSet.getInt(1), resultSet.getString(2));
+            }
         }catch (SQLException e){
             e.printStackTrace();
         }finally {

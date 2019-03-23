@@ -22,7 +22,11 @@ public class ProductRepository extends BaseRepository {
 
             while (resultSet.next())
             {
-                product= new Product(resultSet.getInt(1), resultSet.getString(2), resultSet.getDouble(3), categoryRepository.getCategoryById(resultSet.getInt(4)), resultSet.getString(5));
+                product= new Product(resultSet.getInt(1),
+                        resultSet.getString(2),
+                        categoryRepository.getCategoryById(resultSet.getInt(3)),
+                        resultSet.getDouble(4),
+                        resultSet.getString(5));
             }
         }catch (SQLException e){
             e.printStackTrace();

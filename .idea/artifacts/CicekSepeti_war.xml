@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" build-on-make="true" name="CicekSepeti:war">
-    <output-path>$PROJECT_DIR$/out/artifacts/CicekSepeti_war</output-path>
-    <root id="archive" name="CicekSepeti_war.war">
-      <element id="artifact" artifact-name="CicekSepeti:war exploded" />
-    </root>
-  </artifact>
-</component>

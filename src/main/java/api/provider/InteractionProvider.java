@@ -15,11 +15,16 @@ public class InteractionProvider {
     public static JSONObject getInteractions(HttpServletRequest request, MultivaluedMap<String, String> form){
 
         InteractionRepository repository = new InteractionRepository();
-        List<Interaction> ınteractionList= repository.getInteractions(Integer.parseInt(form.get("userId").get(0)));
+        List<Interaction> interactionList= repository.getInteractions(Integer.parseInt(form.get("userId").get(0)));
 
         Gson g= new Gson();
-        String jsonString = g.toJson(ınteractionList);
-        return new JSONObject(jsonString).put("status", 200);
+        String jsonString = g.toJson(interactionList);
+        return new JSONObject("{interactions: "+jsonString+"}").put("status", 200);
+
+    }
+
+    public void interactionToProduct()
+    {
 
     }
 

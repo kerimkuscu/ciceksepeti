@@ -12,7 +12,7 @@ public class InteractionRepository extends BaseRepository {
 
     public List<Interaction> getInteractions(int userId){
         Statement statement = null;
-        List<Interaction> ınteractionList= new ArrayList<>();
+        List<Interaction> interactionList= new ArrayList<>();
 
         try {
             statement = this.createStatement();
@@ -20,14 +20,14 @@ public class InteractionRepository extends BaseRepository {
 
             while (resultSet.next())
             {
-                ınteractionList.add(new Interaction(resultSet.getInt(1),resultSet.getInt(2),resultSet.getInt(3)));
+                interactionList.add(new Interaction(resultSet.getInt(1),resultSet.getInt(2),resultSet.getInt(3)));
             }
         }catch (SQLException e){
             e.printStackTrace();
         }finally {
             cleanResources(statement);
         }
-        return ınteractionList;
+        return interactionList;
     }
 
 }

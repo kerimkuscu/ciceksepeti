@@ -60,6 +60,6 @@ public class Product {
 
     public  static  Product getDummyProduct()
     {
-        return new Product(0,"Dummy Product", Category.getDummyCategory(), 0.0,"");
+        return new Product(0,"Dummy ProductLocationProvider", Category.getDummyCategory(), 0.0,"");
     }
 }

@@ -1,7 +1,10 @@
 package repository;
 
+import bean.ProductLocation;
 import dto.Interaction;
 import dto.Product;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,6 +37,34 @@ public class ProductRepository extends BaseRepository {
             cleanResources(statement);
         }
         return product;
+    }
+
+    public JSONArray getProductLocationList(int marketId){
+        Statement statement = null;
+        JSONArray productList = new JSONArray();
+
+        try {
+            statement = this.createStatement();
+
+            System.out.println("select PRODUCTID, x, y from Market_Products where MARKETID = " + marketId);
+            ResultSet rs = statement.executeQuery("select PRODUCTID, x, y from Market_Products where MARKETID = " + marketId);
+            while (rs.next()){
+                JSONObject object = new JSONObject();
+
+                object.put("productId", rs.getInt(1));
+                object.put("x", rs.getInt(2));
+                object.put("y", rs.getInt(3));
+
+                productList.put(object);
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            this.cleanResources(statement);
+        }
+
+        return productList;
     }
 
 }

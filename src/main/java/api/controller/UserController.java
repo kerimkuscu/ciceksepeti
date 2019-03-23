@@ -5,10 +5,7 @@ import api.provider.UserProvider;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -29,8 +26,8 @@ public class UserController {
     @Path("/list")
     @Consumes(APPLICATION_FORM_URLENCODED)
     @Produces("application/json;charset=utf-8")
-    public Response getNewContactReportPersonalList(@Context HttpServletRequest request, MultivaluedMap<String, String> form) {
-        JSONObject data = UserProvider.getUserInfo(request, form);
+    public Response getNewContactReportPersonalList(@Context HttpServletRequest request, @QueryParam("userId") int userId) {
+        JSONObject data = UserProvider.getUserInfo(request, userId);
 
         return Response.status(data.getInt("status")).entity(data.toString()).build();
     }

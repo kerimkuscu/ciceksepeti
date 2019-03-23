@@ -112,13 +112,13 @@ public class InteractionRepository extends BaseRepository {
         try {
             statement = this.createStatement();
             ResultSet resultSet= statement.executeQuery("select NAME, MAX(TIMESTAMP) from Interactions inner join Product on Interactions.PRODUCTID = Product.ID " +
-                    " WHERE USERID="+userId + " group by NAME limit 5");
+                    " WHERE USERID="+userId + " group by NAME order by MAX(TIMESTAMP) desc limit 5");
 
             while (resultSet.next()) {
                 JSONObject object = new JSONObject();
 
                 object.put("name", resultSet.getString(1));
-                object.put("timeStamp", resultSet.getString(2));
+                object.put("timeStamp", resultSet.getString(2).substring(0, 16));
 
                 interactionList.put(object);
             }

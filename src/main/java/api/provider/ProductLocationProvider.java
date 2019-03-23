@@ -1,11 +1,8 @@
 package api.provider;
 
-import bean.ProductLocation;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import repository.ProductRepository;
-
-import java.util.ArrayList;
 
 public class ProductLocationProvider {
 

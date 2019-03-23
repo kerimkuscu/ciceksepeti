@@ -10,12 +10,12 @@
             scheduled.InteractionCalculatorSchedular
         </listener-class>
     </listener>
--->
+--><!--
     <listener>
         <listener-class>
             scheduled.StockTracerSchedular
         </listener-class>
-    </listener>
+    </listener>-->
 
     <filter>
         <filter-name>CorsFilter</filter-name>

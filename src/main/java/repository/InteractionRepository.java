@@ -1,7 +1,6 @@
 package repository;
 
-import bean.Location;
-import dto.Interaction;
+import dto.Location;
 import dto.Product;
 import org.json.JSONArray;
 import org.json.JSONObject;

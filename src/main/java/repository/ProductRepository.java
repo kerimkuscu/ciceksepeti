@@ -1,7 +1,5 @@
 package repository;
 
-import bean.ProductLocation;
-import dto.Interaction;
 import dto.Product;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -9,8 +7,6 @@ import org.json.JSONObject;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProductRepository extends BaseRepository {
 

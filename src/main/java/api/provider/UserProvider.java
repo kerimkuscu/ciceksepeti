@@ -1,11 +1,10 @@
 package api.provider;
 
-import bean.User;
+import dto.User;
 import org.json.JSONObject;
 import repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.MultivaluedMap;
 
 public class UserProvider {
 

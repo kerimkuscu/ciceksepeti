@@ -1,6 +1,6 @@
 package scheduled;
 
-import bean.Location;
+import dto.Location;
 import repository.InteractionRepository;
 import repository.LocationRepository;
 

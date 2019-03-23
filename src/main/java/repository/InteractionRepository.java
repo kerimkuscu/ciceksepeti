@@ -1,11 +1,13 @@
 package repository;
 
 import bean.Location;
+import dto.Interaction;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 public class InteractionRepository extends BaseRepository {
 
@@ -36,7 +38,7 @@ public class InteractionRepository extends BaseRepository {
         Statement statement = null;
         try {
             statement = this.createStatement();
-            ;
+
             ResultSet rs = statement.executeQuery("select x,y,TIMESTAMP,MARKETID from Location " +
                     "where USERID = " + userId + " and TIMESTAMP between DATE_SUB(NOW(), INTERVAL " + seconds + " second) and NOW() order by TIMESTAMP asc");
             while (rs.next()){
@@ -95,6 +97,26 @@ public class InteractionRepository extends BaseRepository {
         }finally {
             this.cleanResources(statement);
         }
+    }
+
+    public List<Interaction> getInteractions(int userId){
+        Statement statement = null;
+        List<Interaction> interactionList= new ArrayList<>();
+
+        try {
+            statement = this.createStatement();
+            ResultSet resultSet= statement.executeQuery("SELECT * FROM Interactions WHERE USERID="+userId);
+
+            while (resultSet.next())
+            {
+                interactionList.add(new Interaction(resultSet.getInt(1),resultSet.getInt(2),resultSet.getInt(3)));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            cleanResources(statement);
+        }
+        return interactionList;
     }
 
 }

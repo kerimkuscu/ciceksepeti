@@ -19,12 +19,10 @@ public class UserController {
      * Contact report personal scope report controller.
      *
      * @param request HttpServletRequest
-     * @param form    form data for report filters
      * @return JSON Result
      */
-    @POST
+    @GET
     @Path("/list")
-    @Consumes(APPLICATION_FORM_URLENCODED)
     @Produces("application/json;charset=utf-8")
     public Response getNewContactReportPersonalList(@Context HttpServletRequest request, @QueryParam("userId") int userId) {
         JSONObject data = UserProvider.getUserInfo(request, userId);

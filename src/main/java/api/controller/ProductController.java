@@ -27,7 +27,6 @@ public class ProductController {
     @Produces("application/json;charset=utf-8")
     public Response getNewContactReportPersonalList(@Context HttpServletRequest request, @QueryParam("marketId") Integer marketID) {
         JSONObject data = ProductLocationProvider.getProductLocationList(marketID);
-
         return Response.status(data.getInt("status")).entity(data.toString()).build();
     }
 

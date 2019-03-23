@@ -73,7 +73,7 @@ public class InteractionRepository extends BaseRepository {
             statement = this.createStatement();
 
             ResultSet rs = statement.executeQuery("select PRODUCTID from Market_Products " +
-                    "where MARKETID = " + marketId + " and (SQRT((ABS(x-" + x + ") * ABS(x-" + x + ")) + (ABS(y-" + y + ") * ABS(y-" + y + ")))) < " + CLOSENESS);
+                    "where MARKETID = " + marketId + " and (SQRT((ABS(y-" + x + ") * ABS(y-" + x + ")) + (ABS(x-" + y + ") * ABS(x-" + y + ")))) < " + CLOSENESS);
             while (rs.next()){
                 closestProductIdList.add(rs.getInt(1));
             }

@@ -112,7 +112,7 @@ public class InteractionRepository extends BaseRepository {
         try {
             statement = this.createStatement();
             ResultSet resultSet= statement.executeQuery("select NAME, MAX(TIMESTAMP) from Interactions inner join Product on Interactions.PRODUCTID = Product.ID " +
-                    " WHERE USERID="+userId + " group by NAME");
+                    " WHERE USERID="+userId + " group by NAME limit 5");
 
             while (resultSet.next()) {
                 JSONObject object = new JSONObject();

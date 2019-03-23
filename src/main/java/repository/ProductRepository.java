@@ -46,7 +46,6 @@ public class ProductRepository extends BaseRepository {
         try {
             statement = this.createStatement();
 
-            System.out.println("select PRODUCTID, x, y from Market_Products where MARKETID = " + marketId);
             ResultSet rs = statement.executeQuery("select PRODUCTID, x, y from Market_Products where MARKETID = " + marketId);
             while (rs.next()){
                 JSONObject object = new JSONObject();

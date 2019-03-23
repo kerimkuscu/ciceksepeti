@@ -57,4 +57,22 @@ public class BaseRepository {
         }
     }
 
+    public String getNow(){
+        String dateTime = new String();
+        Statement statement = this.createStatement();
+
+        try {
+            ResultSet rs = statement.executeQuery("select NOW()");
+            if(rs.next()){
+                dateTime = rs.getString(1);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            this.cleanResources(statement);
+        }
+
+        return dateTime;
+    }
+
 }

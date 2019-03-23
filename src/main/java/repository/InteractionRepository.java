@@ -33,14 +33,14 @@ public class InteractionRepository extends BaseRepository {
         return userList;
     }
 
-    public ArrayList<Location> getLocations(int seconds, int userId){
+    public ArrayList<Location> getLocations(int seconds, int userId, String now){
         ArrayList<Location> locationList = new ArrayList<>();
         Statement statement = null;
         try {
             statement = this.createStatement();
 
             ResultSet rs = statement.executeQuery("select x,y,TIMESTAMP,MARKETID from Location " +
-                    "where USERID = " + userId + " and TIMESTAMP between DATE_SUB(NOW(), INTERVAL " + seconds + " second) and NOW() order by TIMESTAMP asc");
+                    "where USERID = " + userId + " and TIMESTAMP between DATE_SUB('" + now + "', INTERVAL " + seconds + " second) and '" + now + "' order by TIMESTAMP asc");
             while (rs.next()){
                 Location location = new Location();
 
@@ -51,6 +51,9 @@ public class InteractionRepository extends BaseRepository {
 
                 locationList.add(location);
             }
+
+            statement.executeUpdate("delete from Location " +
+                    "where USERID = " + userId + " and TIMESTAMP between DATE_SUB('" + now + "', INTERVAL " + seconds + " second) and '" + now + "'");
 
         }catch (SQLException e){
             e.printStackTrace();

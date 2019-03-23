@@ -11,7 +11,7 @@ import java.util.TimerTask;
 
 public class InteractionCalculatorSchedular extends BaseSchedular {
 
-    private static final Integer CONTROL_RANGE_IN_SECONDS = 300;
+    private static final Integer CONTROL_RANGE_IN_SECONDS = 30;
     private static final Integer INTERACTION_BORDER = 3;
 
     private LocationRepository locationRepository;
@@ -42,21 +42,21 @@ public class InteractionCalculatorSchedular extends BaseSchedular {
 
         System.out.println("Catching interactions ...");
         ArrayList<Integer> userList = interactionRepository.getActiveUsers(CONTROL_RANGE_IN_SECONDS);
+        String now = interactionRepository.getNow();
 
         long start = System.currentTimeMillis();
         for(Integer userId : userList){
 
-            ArrayList<Location> locations = interactionRepository.getLocations(CONTROL_RANGE_IN_SECONDS, userId);
+            ArrayList<Location> locations = interactionRepository.getLocations(CONTROL_RANGE_IN_SECONDS, userId, now);
             HashMap<Integer, Integer> closestPoints = new HashMap<>();
 
             for(Location location : locations){
 
                 ArrayList<Integer> closestProductsId = interactionRepository.getClosestProducts(location.getX(), location.getY(), location.getMarketId());
-
+                closestPoints = removeDifferences(closestProductsId, closestPoints);
                 for(Integer productId : closestProductsId){
 
                     if(closestPoints.containsKey(productId)){
-
                         if((closestPoints.get(productId) + 1) >= INTERACTION_BORDER){
                             System.out.println("Creating interaction: " + userId + " - " + productId);
                             interactionRepository.createInteraction(userId,productId);
@@ -67,8 +67,7 @@ public class InteractionCalculatorSchedular extends BaseSchedular {
                         }
 
                     }else {
-                        closestPoints.remove(productId);
-                        continue;
+                        closestPoints.put(productId, 1);
                     }
 
                 }
@@ -79,6 +78,18 @@ public class InteractionCalculatorSchedular extends BaseSchedular {
 
         System.out.println("Total time to catch interactions: " + (System.currentTimeMillis() - start));
 
+    }
+
+    public HashMap<Integer, Integer> removeDifferences(ArrayList<Integer> productIdList, HashMap<Integer, Integer> map){
+        HashMap<Integer, Integer> newMap = new HashMap<>();
+
+        for(Integer productId : productIdList){
+            if(map.containsKey(productId)){
+                newMap.put(productId, map.get(productId));
+            }
+        }
+
+        return newMap;
     }
 
     public class CatchInteractions extends TimerTask {

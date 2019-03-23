@@ -36,5 +36,4 @@ public class RecommendationProvider {
         return recommendationProducts;
     }
 
-
 }

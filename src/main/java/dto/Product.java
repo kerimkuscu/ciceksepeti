@@ -1,8 +1,5 @@
 package dto;
 
-/**
- * Created by emre on 23/03/2019
- */
 public class Product {
     private int id;
     private String name;

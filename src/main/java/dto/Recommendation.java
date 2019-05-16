@@ -1,8 +1,5 @@
 package dto;
 
-/**
- * Created by emre on 22/03/2019
- */
 public class Recommendation {
     private int id;
     private int userId;
